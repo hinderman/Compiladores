@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="./Maquina de turing/turing.css" rel="stylesheet" type="text/css">
+    <link href="./Maquina de turing/textarea.css" rel="stylesheet" type="text/css">
+    <title>Maquina de turing</title>
+    <script type="text/javascript" defer="defer" src="./Maquina de turing/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" defer="defer" src="./Maquina de turing/jsturing.js"></script>
+  </head>
+  <body onload="OnLoad();">
+    <div><h1>Maquia de turing</h1></div>
+    <div id="Machine">
+      <div id="MachineTapeContainer">
+        <div id="MachineTape" class="MachineStatusBox"><!--
+        --><div id="RunningTapeDisplay"><!--
+           --><pre id="LeftTape" class="tape"></pre><!-- 
+           --><div id="ActiveTapeArea"><!-- 
+             --><pre id="ActiveTape" class="tape">H</pre><!-- 
+             --><div id="MachineHead"><!-- 
+               --><div class="HeadTop"></div><!-- 
+               --><div class="HeadBody"></div><!-- 
+             --></div><!-- 
+           --></div><!-- 
+           --><pre id="RightTape" class="tape">ola mundo</pre><!-- 
+       --></div><!--
+     --></div><!--
+   --></div>
+      <div id="MachineMiddleSection">
+        <div id="MachineStatusMsgWrapper">
+          <pre id="MachineStatusMsgText"></pre>
+            <div id="MachineStatusMsgBg"></div>
+        </div>
+        <div id="MachineStateContainer" class="MachineStatusContainer">
+           <div class="BoxTitle">Estado actual</div>
+           <div id="MachineState" class="MachineStatusBox">0</div>
+        </div>
+        <div id="MachineStepsContainer" class="MachineStatusContainer">
+           <div class="BoxTitle">Pasos</div>
+           <div id="MachineSteps" class="MachineStatusBox">0</div>
+        </div>
+      </div>
+      <div class="cleardiv"></div>
+      <div id="MachineLowerSection">
+        <div id="MachineLowerSection2">
+          <div id="MachineProgramContainer">
+            <div class="BoxTitle">Programa maquina de turing</div>
+            <div id="MachineProgramBlock">
+              <div id="MachineProgramBlock2">
+                <div id="SourceContainer">
+                  <div id="SourceBackground">
+                    <div id= "talinebg" class="talinebg">
+                      <div class="talinenum">1</div>
+                    </div>
+                  </div>
+                  <div id="tabackground">
+                    <textarea id="Source" wrap="off" oninput="TextareaChanged();" onscroll="UpdateTextareaScroll();" onblur="Compile();"></textarea>
+                  </div>
+                </div>
+                <div id="SyntaxMsg">&nbsp;</div>
+              </div>
+            </div>
+          </div> 
+          <div id="MachineControlBlock">
+            <div class="BoxTitle">Controles</div>
+            <div id="MachineButtonsBlock">
+              <button id="RunButton" onclick="RunButton();">Ejecutar</button> 
+              <span><div id="SpeedCheckbox" onclick="SpeedCheckbox();"></div></span><br>
+              <button id="StopButton" onclick="StopButton();">Pause</button><br>
+              <button id="UndoButton" onclick="Undo();" style="float: right;" disabled="">Dehacer</button>
+              <button id="StepButton" onclick="StepButton();" >paso</button><br>
+              <button id="ResetButton" onclick="ResetButton();" class="">Reiniciar</button>
+              <div id="InitialTapeDisplay">
+                Inicial input:<input type="text" id="InitialInput" value="" onchange="ShowResetMsg(true);">
+              </div>
+              <div style="font-size: small;">
+                <a href="javascript:" onclick="$().slideToggle();" ></a>
+              </div>
+              <div id="AdvancedOptions" style="margin-top: 0.25em; display: none;">
+                <div id="InitialStateDisplay" style="margin-bottom: 0.5em;">
+                  <input type="text" id="InitialState" value="0" onchange="ShowResetMsg(true);">
+                </div>
+                <div><select onchange="VariantChanged(true);" id="MachineVariant">
+                    <option value="0" selected="selected"></option>
+                    <option value="1"></option>
+                    <option value="2"></option>
+                  </select>
+                  <div id="MachineVariantDescription" style="font-size: small; font-style: italic;"></div>
+                  <span style="font-size: x-small;"><a href="javascript:" onclick="$().hide();">[Close]</a></span>
+                </div>
+              </div> 
+              <div id="ResetMessage" style="display: none;"></div><br><br>
+              <div id="LoadBlock">
+                <a href="javascript:" onclick="$().slideToggle();" ></a>
+                <div id="LoadMenu" style="display: none;">
+                  <ul>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                    <li><a href="javascript:" onclick="LoadSampleProgram();"></a></li>
+                  </ul>
+                  <span style="font-size: x-small;"><a href="javascript:" onclick="$().hide();"></a></span>
+                </div>
+              </div><br>
+              <a href="javascript:" onclick="SaveToCloud();"></a>
+              <div id="SaveStatus" style="display: block;">
+                <div id="SaveStatusFg">
+                  <div id="SaveStatusMsg"><br><a></a><br><br><span style="font-size: small; font-style: italic;"></span></div>
+                  <span style="font-size: x-small;"><a href="javascript:" onclick="ClearSaveMessage();"></a></span>
+                </div> 
+                <div id="SaveStatusBg" style="background-color: rgb(136, 238, 153); display: none;"></div>
+              </div>
+            </div> 
+          </div> 
+        </div> 
+      </div>
+    </div>
+  </body>
+</html>
